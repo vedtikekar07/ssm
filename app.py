@@ -1,11 +1,3 @@
-# from fastapi import FastAPI
-
-# # Create an instance of the FastAPI class
-# app = FastAPI()
-
-# # Define a route for the root endpoint
-
-
 from fastapi import FastAPI, HTTPException
 from tortoise.contrib.fastapi import register_tortoise
 from models import * # Import the PersonalInfo model
@@ -23,9 +15,7 @@ app.add_middleware(
     allow_methods = ['*'],
     allow_headers = ['*']
 )
-# Register Tortoise
 
-# API routes
 
 @app.get("/")
 def index():
@@ -38,7 +28,7 @@ async def create_personal_info(payload: PersonalInfo_request):
     response  = await PersonalInfo_pydantic.from_tortoise_orm(new_info)
     return {"status": "success", "response": response}
 
-@app.get('/personal-info/{personal_info_id}', response_model=PersonalInfo)
+@app.get('/personal-info/{personal_info_id}')
 async def read_personal_info(personal_info_id: int):
     info = await PersonalInfo.get_or_none(id=personal_info_id)
     if info is None:
